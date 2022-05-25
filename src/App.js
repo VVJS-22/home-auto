@@ -7,7 +7,7 @@ function App() {
   const [instance, setInstance] = useState()
 
   const [devices] = useState([
-    ["light","zero"],
+    ["light","0"],
     ["fan","one"],
     ["socket1","two"],
     ["socket2","three"],
@@ -26,9 +26,8 @@ function App() {
     <Box>
       <Header>RNPJ Controller</Header>
       <DeviceBox>
-      {devices.map(([name, pin], index) => (
-        <Device key={index}>
-        <SubHeader>{name}</SubHeader>
+        <Device>
+        <SubHeader>Light</SubHeader>
         <Box
         style={{
           flexDirection: "row",
@@ -38,18 +37,17 @@ function App() {
         >
         <ButtonOn
         onClick={() => instance.Digital.write({
-          pin: {pin},
+          pin: 0,
           state: 'HIGH'
         })}>ON</ButtonOn>
         
         <ButtonOff
         onClick={() => instance.Digital.write({
-          pin: {pin},
+          pin: 0,
           state: 'LOW'
         })}>OFF</ButtonOff>
         </Box>
       </Device>
-      ))}
       </DeviceBox>
     </Box>
   )
