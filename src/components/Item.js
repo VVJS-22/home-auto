@@ -34,14 +34,14 @@ const Item = ({name, funcOn, loadingOn, loadStatus, loadingOff, funcOff, on}) =>
             <LoadingButton
             variant="contained"
             onClick={funcOn}
-            loading={loadingOn}
+            loading={loadingOff}
             >
                 On
             </LoadingButton>
             <LoadingButton
             variant="contained"
             onClick={funcOff}
-            loading={loadingOff}
+            loading={loadingOn}
             color='error'>Off</LoadingButton> 
         </Stack>
     </Stack>
