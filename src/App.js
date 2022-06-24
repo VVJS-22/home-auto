@@ -5,11 +5,13 @@ import * as React from 'react';
 import {Stack, Box, AppBar, Typography, Paper} from '@mui/material';
 import Item from './components/Item';
 import axios from 'axios';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 
 const App = () => {
 
   const [status, setStatus] = useState("Device is Offline")
+
 
   useEffect(() => {
     try {
@@ -68,6 +70,50 @@ const App = () => {
       onStatus ? setOn(true) : setOn(false)
       setLoading(false)
     }
+  }
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  useEffect(() => {
+    if (transcript.toLowerCase() == "fan on") {
+      switchDevice(0, 'LOW',setFanStatus, setOffFanLoading, false, setFanOn)
+    }
+    if (transcript.toLowerCase() == "fan off") {
+      switchDevice(0, 'HIGH', setFanStatus, setOnFanLoading, true, setFanOn)
+    }
+    if (transcript.toLowerCase() == "lights on") {
+      switchDevice(1, 'LOW',setLightStatus, setOffLightLoading, false, setLightOn)
+    }
+    if (transcript.toLowerCase() == "lights off") {
+      switchDevice(1, 'HIGH', setLightStatus, setOnLightLoading, true, setLightOn);
+    }
+    if (transcript.toLowerCase() == "socket 1 on") {
+      switchDevice(2, 'LOW',setS1Status, setOffS1Loading, false, setS1On)
+    }
+    if (transcript.toLowerCase() == "socket 1 off") {
+      switchDevice(2, 'HIGH', setS1Status, setOnS1Loading, true, setS1On)
+    }
+    if (transcript.toLowerCase() == "socket 2 on") {
+      switchDevice(3, 'LOW',setS2Status, setOffS2Loading, false, setS2On)
+    }
+    if (transcript.toLowerCase() == "socket 2 off") {
+      switchDevice(3, 'HIGH', setS2Status, setOnS2Loading, true, setS2On);
+    }
+    if (transcript.toLowerCase() == "socket 3 on") {
+      switchDevice(4, 'LOW',setS3Status, setOffS3Loading, false, setS3On)
+    }
+    if (transcript.toLowerCase() == "socket 3 off") {
+      switchDevice(4, 'HIGH', setS3Status, setOnS3Loading, true, setS3On)
+    }
+  }, [transcript])
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
   }
 
   return (
@@ -137,6 +183,13 @@ const App = () => {
          />
         </Paper>
       </Stack>
+      <div>
+      <p>Microphone: {listening ? 'on' : 'off'}</p>
+      <button onClick={SpeechRecognition.startListening}>Start</button>
+      <button onClick={SpeechRecognition.stopListening}>Stop</button>
+      <button onClick={resetTranscript}>Reset</button>
+      <p>{transcript}</p>
+    </div>
     </Box>
   )
 }
